@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="personalscfModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="rl_usuario_lancamento">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_User" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_Lancamento" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_conta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NomeBanco" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="TipoConta" Type="enum" />
+          <Property Name="DataExclusao" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="tb_lancamento">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_Banco" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="NomeEvento" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Valor" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="DataEvento" Type="datetime" Precision="0" />
+          <Property Name="DataExclusao" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="tb_usuario">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cidade" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CPF" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="DataNascimento" Type="date" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PasswordHash" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="UF" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="UserFullName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DataExclusao" Type="datetime" Precision="0" />
+        </EntityType>
+        <Association Name="rl_usuario_lancamento_ibfk_1">
+          <End Role="tb_usuario" Type="Self.tb_usuario" Multiplicity="1" />
+          <End Role="rl_usuario_lancamento" Type="Self.rl_usuario_lancamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_usuario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="rl_usuario_lancamento">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="rl_usuario_lancamento_ibfk_2">
+          <End Role="tb_lancamento" Type="Self.tb_lancamento" Multiplicity="1" />
+          <End Role="rl_usuario_lancamento" Type="Self.rl_usuario_lancamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_lancamento">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="rl_usuario_lancamento">
+              <PropertyRef Name="ID_Lancamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tb_lancamento_ibfk_1">
+          <End Role="tb_conta" Type="Self.tb_conta" Multiplicity="1" />
+          <End Role="tb_lancamento" Type="Self.tb_lancamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_conta">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tb_lancamento">
+              <PropertyRef Name="ID_Banco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="personalscfModelStoreContainer">
+          <EntitySet Name="rl_usuario_lancamento" EntityType="Self.rl_usuario_lancamento" Schema="personalscf" store:Type="Tables" />
+          <EntitySet Name="tb_conta" EntityType="Self.tb_conta" Schema="personalscf" store:Type="Tables" />
+          <EntitySet Name="tb_lancamento" EntityType="Self.tb_lancamento" Schema="personalscf" store:Type="Tables" />
+          <EntitySet Name="tb_usuario" EntityType="Self.tb_usuario" Schema="personalscf" store:Type="Tables" />
+          <AssociationSet Name="rl_usuario_lancamento_ibfk_1" Association="Self.rl_usuario_lancamento_ibfk_1">
+            <End Role="tb_usuario" EntitySet="tb_usuario" />
+            <End Role="rl_usuario_lancamento" EntitySet="rl_usuario_lancamento" />
+          </AssociationSet>
+          <AssociationSet Name="rl_usuario_lancamento_ibfk_2" Association="Self.rl_usuario_lancamento_ibfk_2">
+            <End Role="tb_lancamento" EntitySet="tb_lancamento" />
+            <End Role="rl_usuario_lancamento" EntitySet="rl_usuario_lancamento" />
+          </AssociationSet>
+          <AssociationSet Name="tb_lancamento_ibfk_1" Association="Self.tb_lancamento_ibfk_1">
+            <End Role="tb_conta" EntitySet="tb_conta" />
+            <End Role="tb_lancamento" EntitySet="tb_lancamento" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="personalscfModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="rl_usuario_lancamento">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_User" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_Lancamento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tb_usuario" Relationship="Self.rl_usuario_lancamento_ibfk_1" FromRole="rl_usuario_lancamento" ToRole="tb_usuario" />
+          <NavigationProperty Name="tb_lancamento" Relationship="Self.rl_usuario_lancamento_ibfk_2" FromRole="rl_usuario_lancamento" ToRole="tb_lancamento" />
+        </EntityType>
+        <EntityType Name="tb_conta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NomeBanco" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TipoConta" Type="String" MaxLength="65532" FixedLength="false" Unicode="false" />
+          <Property Name="DataExclusao" Type="DateTime" />
+          <NavigationProperty Name="tb_lancamento" Relationship="Self.tb_lancamento_ibfk_1" FromRole="tb_conta" ToRole="tb_lancamento" />
+        </EntityType>
+        <EntityType Name="tb_lancamento">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_Banco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NomeEvento" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Valor" Type="Decimal" Nullable="false" />
+          <Property Name="DataEvento" Type="DateTime" />
+          <Property Name="DataExclusao" Type="DateTime" />
+          <NavigationProperty Name="rl_usuario_lancamento" Relationship="Self.rl_usuario_lancamento_ibfk_2" FromRole="tb_lancamento" ToRole="rl_usuario_lancamento" />
+          <NavigationProperty Name="tb_conta" Relationship="Self.tb_lancamento_ibfk_1" FromRole="tb_lancamento" ToRole="tb_conta" />
+        </EntityType>
+        <EntityType Name="tb_usuario">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cidade" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CPF" Type="String" MaxLength="14" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DataNascimento" Type="DateTime" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UF" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserFullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DataExclusao" Type="DateTime" />
+          <NavigationProperty Name="rl_usuario_lancamento" Relationship="Self.rl_usuario_lancamento_ibfk_1" FromRole="tb_usuario" ToRole="rl_usuario_lancamento" />
+        </EntityType>
+        <Association Name="rl_usuario_lancamento_ibfk_1">
+          <End Role="tb_usuario" Type="Self.tb_usuario" Multiplicity="1" />
+          <End Role="rl_usuario_lancamento" Type="Self.rl_usuario_lancamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_usuario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="rl_usuario_lancamento">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="rl_usuario_lancamento_ibfk_2">
+          <End Role="tb_lancamento" Type="Self.tb_lancamento" Multiplicity="1" />
+          <End Role="rl_usuario_lancamento" Type="Self.rl_usuario_lancamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_lancamento">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="rl_usuario_lancamento">
+              <PropertyRef Name="ID_Lancamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tb_lancamento_ibfk_1">
+          <End Role="tb_conta" Type="Self.tb_conta" Multiplicity="1" />
+          <End Role="tb_lancamento" Type="Self.tb_lancamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_conta">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tb_lancamento">
+              <PropertyRef Name="ID_Banco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="personalscfEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="rl_usuario_lancamento" EntityType="Self.rl_usuario_lancamento" />
+          <EntitySet Name="tb_conta" EntityType="Self.tb_conta" />
+          <EntitySet Name="tb_lancamento" EntityType="Self.tb_lancamento" />
+          <EntitySet Name="tb_usuario" EntityType="Self.tb_usuario" />
+          <AssociationSet Name="rl_usuario_lancamento_ibfk_1" Association="Self.rl_usuario_lancamento_ibfk_1">
+            <End Role="tb_usuario" EntitySet="tb_usuario" />
+            <End Role="rl_usuario_lancamento" EntitySet="rl_usuario_lancamento" />
+          </AssociationSet>
+          <AssociationSet Name="rl_usuario_lancamento_ibfk_2" Association="Self.rl_usuario_lancamento_ibfk_2">
+            <End Role="tb_lancamento" EntitySet="tb_lancamento" />
+            <End Role="rl_usuario_lancamento" EntitySet="rl_usuario_lancamento" />
+          </AssociationSet>
+          <AssociationSet Name="tb_lancamento_ibfk_1" Association="Self.tb_lancamento_ibfk_1">
+            <End Role="tb_conta" EntitySet="tb_conta" />
+            <End Role="tb_lancamento" EntitySet="tb_lancamento" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="personalscfModelStoreContainer" CdmEntityContainer="personalscfEntities2">
+          <EntitySetMapping Name="rl_usuario_lancamento">
+            <EntityTypeMapping TypeName="personalscfModel.rl_usuario_lancamento">
+              <MappingFragment StoreEntitySet="rl_usuario_lancamento">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+                <ScalarProperty Name="ID_Lancamento" ColumnName="ID_Lancamento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_conta">
+            <EntityTypeMapping TypeName="personalscfModel.tb_conta">
+              <MappingFragment StoreEntitySet="tb_conta">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NomeBanco" ColumnName="NomeBanco" />
+                <ScalarProperty Name="TipoConta" ColumnName="TipoConta" />
+                <ScalarProperty Name="DataExclusao" ColumnName="DataExclusao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_lancamento">
+            <EntityTypeMapping TypeName="personalscfModel.tb_lancamento">
+              <MappingFragment StoreEntitySet="tb_lancamento">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Banco" ColumnName="ID_Banco" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="NomeEvento" ColumnName="NomeEvento" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="DataEvento" ColumnName="DataEvento" />
+                <ScalarProperty Name="DataExclusao" ColumnName="DataExclusao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_usuario">
+            <EntityTypeMapping TypeName="personalscfModel.tb_usuario">
+              <MappingFragment StoreEntitySet="tb_usuario">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Cidade" ColumnName="Cidade" />
+                <ScalarProperty Name="CPF" ColumnName="CPF" />
+                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="UF" ColumnName="UF" />
+                <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+                <ScalarProperty Name="DataExclusao" ColumnName="DataExclusao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
