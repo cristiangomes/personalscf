@@ -79,6 +79,7 @@ namespace PersonalSCF.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    System.Web.Security.FormsAuthentication.SetAuthCookie(model.Email, false);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -151,7 +152,7 @@ namespace PersonalSCF.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Nome, Email = model.Email, PhoneNumber = model.PhoneNumber/*, Cidade = model.Cidade, CPF = model.CPF, DataNascimento = model.DataNascimento*/ };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -82,11 +82,6 @@ namespace PersonalSCF.Models
         [Display(Name = "Confirmar senha")]
         [Compare("Password", ErrorMessage = "Os campos Senha e Repita a Senha não estão iguais.")]
         public string ConfirmPassword { get; set; }
-        public string Cidade { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public int CPF { get; set; }
-        public string PhoneNumber { get; set; }
-
     }
 
     public class ResetPasswordViewModel
