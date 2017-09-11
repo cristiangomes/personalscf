@@ -13,16 +13,16 @@ using PersonalSCF.Models;
 namespace PersonalSCF.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class ContaController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        public ContaController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public ContaController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -151,7 +151,7 @@ namespace PersonalSCF.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Nome, Email = model.Email, PhoneNumber = model.PhoneNumber/*, Cidade = model.Cidade, CPF = model.CPF, DataNascimento = model.DataNascimento*/ };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
