@@ -1,12 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>Personal SCF</h1>
-    <p class="lead">Personal SCF é o melhor sistema de controle financeiro pessoal do mercado!</p>
-    @if (!Request.IsAuthenticated)
-    {
-        <p><a href="~/Conta/Register" class="btn btn-primary btn-lg">Comece agora &raquo;</a></p>
-    }
-</div>
+<p>Tela principal</p>
