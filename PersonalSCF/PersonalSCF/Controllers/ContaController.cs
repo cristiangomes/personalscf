@@ -14,7 +14,6 @@ using System.Web.Security;
 
 namespace PersonalSCF.Controllers
 {
-    [Authorize]
     public class ContaController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -217,13 +216,9 @@ namespace PersonalSCF.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            Session["UserEmail"] = null;
+            Session.Abandon();
             return RedirectToAction("Inicial", "Home");
         }
 

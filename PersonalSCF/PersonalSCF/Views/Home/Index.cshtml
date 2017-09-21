@@ -1,5 +1,6 @@
-﻿@{
+﻿@if (Session["UserEmail"] != null)
+{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    @*<a href="~/ProjecaoFinanceira/Index"><h4 style="margin-top:20px">Relatório de Projeção Financeira</h4></a>*@
+    <li class="topo">@Html.ActionLink("Relatório de Projeção Financeira", "Index", "ProjecaoFinanceira", new { email = Session["UserEmail"] }, null)</li>
 }
-
-<p>Tela principal</p>

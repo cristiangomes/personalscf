@@ -11,10 +11,6 @@ namespace PersonalSCF.Controllers
     {
         public ActionResult Index()
         {
-            if (Session["UserEmail"] != null)
-            {
-                
-            }
             return View();
         }
 

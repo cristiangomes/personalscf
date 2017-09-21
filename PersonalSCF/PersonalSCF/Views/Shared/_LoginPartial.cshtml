@@ -1,6 +1,6 @@
 ﻿@if (Session["UserEmail"] != null)
 {
-    <ul class="navbar-right">
+    <ul class="nav navbar-nav navbar-right">
         <li>@Html.ActionLink("Logoff", "LogOff", "Conta", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
     </ul>
 }
