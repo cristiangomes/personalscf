@@ -148,7 +148,7 @@ namespace PersonalSCF.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(UsuarioModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             try
             {
@@ -156,25 +156,36 @@ namespace PersonalSCF.Controllers
                 {
                     personalscfEntities2 context = new personalscfEntities2();
                     tb_usuario usuario = new tb_usuario();
-                    usuario.Email = model.Email;
-                    usuario.PasswordHash = model.Senha;
-                    usuario.UserFullName = model.UserFullName;
-                    usuario.CPF = model.CPF;
 
-                    Random random = new Random();
-                    usuario.Cidade = random.Next().ToString();
-                    usuario.DataNascimento = DateTime.Now;
-                    usuario.ID = random.Next().ToString();
-                    usuario.PhoneNumber = random.Next(999999999).ToString();
-                    usuario.UF = random.Next(2).ToString();
+                    if (model.Password == model.ConfirmPassword)
+                    {
+                        usuario.Email = model.Email;
+                        usuario.PasswordHash = model.Password;
+                        Random random = new Random();
+                        model.ID = random.Next().ToString();
+                        usuario.ID = model.ID;
+                        usuario.Cidade = random.Next().ToString();
+                        usuario.DataNascimento = DateTime.Now;
+                        usuario.PhoneNumber = random.Next(999999999).ToString();
+                        usuario.UF = random.Next(2).ToString();
+                        usuario.UserFullName = random.Next().ToString();
+                        usuario.CPF = random.Next().ToString();
 
-                    context.tb_usuario.Add(usuario);
-                    context.SaveChanges();
+                        context.tb_usuario.Add(usuario);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        return View();
+                    }                    
                 }
             }
             catch(Exception ex)
             {
-
+                if (ex.InnerException.InnerException.Message.Contains("Duplicate entry"))
+                {
+                    //msg pra tela dizendo que ja tem email cadastrado
+                }
             }
             return RedirectToAction("Login");
         }
@@ -241,6 +252,43 @@ namespace PersonalSCF.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        public ActionResult Editar(string email)
+        {
+            return View();            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Editar(string email, UsuarioModel model)
+        {
+            try
+            {
+                personalscfEntities2 context = new personalscfEntities2();
+                tb_usuario usuario = (from u in context.tb_usuario
+                                      where u.Email == email && u.DataExclusao == null
+                                      select u).First();
+
+            if (ModelState.IsValid)
+                {
+                    usuario.Cidade = model.Cidade;
+                    usuario.CPF = model.CPF;
+                    usuario.DataNascimento = model.DataNascimento;
+                    usuario.Email = model.Email;
+                    usuario.PhoneNumber = model.PhoneNumber;
+                    usuario.PasswordHash = model.Senha;
+                    usuario.UF = model.UF;
+                    usuario.UserFullName = model.UserFullName;
+
+                    context.SaveChanges();
+                }
+                return RedirectToAction("Editar");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         #region Helpers

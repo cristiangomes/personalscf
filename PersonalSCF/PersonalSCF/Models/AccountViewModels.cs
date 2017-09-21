@@ -63,6 +63,7 @@ namespace PersonalSCF.Models
     public class RegisterViewModel
     {
         public string Nome { get; set; }
+        public string ID { get; set; }
 
         [Required]
         [EmailAddress]
