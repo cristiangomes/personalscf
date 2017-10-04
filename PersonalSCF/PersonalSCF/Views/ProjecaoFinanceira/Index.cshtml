@@ -1,8 +1,125 @@
-﻿@{
+﻿@using PersonalSCF.DataModel;
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal saldo = ViewBag.ValorReceitas + ViewBag.ValorDespesas;
 }
 
-<div class="topo">
-    <h4><strong>Receitas (total): </strong>@ViewBag.Receitas</h4>
-    <h4><strong>Despesas (total): </strong>@ViewBag.Despesas</h4>
+<div class="modal fade" id="modalReceitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center; box-sizing:unset;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 style="color:green;" class="modal-title corPadrao"> Histórico de Receitas</h2>
+            </div>
+            <div class="modal-body" style="min-height:140px; text-align:left;">
+                <div class="divMensagemModal">
+                    <table class="tableModal">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (tb_lancamento lanc in ViewBag.Receitas)
+                            {
+                                <tr>
+                                    @if (lanc.DataEvento != null)
+                                    {
+                                        <td class="tdModal">@lanc.DataEvento.ToString().Substring(0, 10)</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="tdModal">-</td>
+                                    }
+                                    <td class="tdModal">@lanc.Valor</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="modal fade" id="modalDespesas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center; box-sizing:unset;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 style="color:red;" class="modal-title corPadrao"> Histórico de Despesas</h2>
+            </div>
+            <div class="modal-body" style="min-height:140px; text-align:left;">
+                <div class="divMensagemModal">
+                    <table class="tableModal">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (tb_lancamento lanc in ViewBag.Despesas)
+                            {
+                                <tr>
+                                    @if (lanc.DataEvento != null)
+                                    {
+                                        <td class="tdModal">@lanc.DataEvento.ToString().Substring(0, 10)</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="tdModal">-</td>
+                                    }
+                                    <td class="tdModal">@lanc.Valor</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="topo">
+    <h4>
+        <strong>Receitas (total): </strong>R$@ViewBag.ValorReceitas
+        <span style="cursor:pointer; color:green; margin-left:10px;" data-toggle="modal" data-target="#modalReceitas">Histórico</span>
+    </h4>
+    <h4>
+        <strong>Despesas (total): </strong>-R$@ViewBag.ValorDespesas.ToString().Substring(1)
+        <span style="cursor:pointer; color:red; margin-left:10px;" data-toggle="modal" data-target="#modalDespesas">Histórico</span>
+    </h4>
+    <h4>
+        <strong>Saldo: </strong>R$@saldo
+    </h4>
+</div>
+<button onclick="triggerProjecao(30, @ViewBag.Receitas30dias, @ViewBag.Despesas30dias)">Projetar para 30 dias</button>
+<button onclick="triggerProjecao(60, @ViewBag.Receitas60dias, @ViewBag.Despesas60dias)">Projetar para 60 dias</button>
+<button onclick="triggerProjecao(90, @ViewBag.Receitas90dias, @ViewBag.Despesas90dias)">Projetar para 90 dias</button>
+<div id="divProjecao"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    function triggerProjecao(qtdDias, receitas, despesas) {
+        // Load google charts
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Draw the chart and set the chart values
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                   ['Element', 'Valor', { role: 'style' }],
+                   ['Receitas', receitas, 'green'],            // RGB value
+                   ['Despesas', despesas, 'red'],            // English color name
+            ]);
+
+            // Optional; add a title and set the width and height of the chart
+            var options = { 'title': 'Projeção Financeira (' + qtdDias + ')', 'width': 600, 'height': 500 };
+
+            // Display the chart inside the <div> element with id="piechart"
+            var chart = new google.visualization.ColumnChart(document.getElementById('divProjecao'));
+            chart.draw(data, options);
+        }
+    }
+</script>
